@@ -15,7 +15,7 @@ GOOGLE_WORKSHEET = "Property"
 AUTO_REFRESH_SECONDS = 30
 
 # Change this before sharing the deployed app, or set APP_PASSWORD in Streamlit Secrets.
-APP_PASSWORD = "ChangeMeUtility2026!"
+APP_PASSWORD = "Gopher22"
 
 # Alert thresholds.
 WARNING_THRESHOLD = 10.0
