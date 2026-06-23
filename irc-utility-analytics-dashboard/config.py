@@ -18,9 +18,9 @@ AUTO_REFRESH_SECONDS = 30
 APP_PASSWORD = "Gopher22"
 
 # Alert thresholds.
-WARNING_THRESHOLD = 5.0
-CRITICAL_THRESHOLD = 10.0
-FLAT_CHANGE_TOLERANCE = 3.0
+WARNING_THRESHOLD = 15.0
+CRITICAL_THRESHOLD = 25.0
+FLAT_CHANGE_TOLERANCE = 12.0
 
 # Geographic view.
 # If Latitude/Longitude columns are added to the sheet later, the app will use them.
