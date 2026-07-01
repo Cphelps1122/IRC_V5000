@@ -296,6 +296,11 @@ def apply_theme():
         .mini-stat {{ border:1px solid var(--border); background:rgba(255,255,255,.035); border-radius:12px; padding:.55rem .65rem; }}
         .mini-label {{ color:var(--text-muted); font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; font-weight:800; }}
         .mini-value {{ color:var(--text-main); font-size:.9rem; font-weight:850; margin-top:.12rem; }}
+        /* Delta colors must beat Streamlit/BaseWeb text overrides. */
+        .delta-good, .delta-good * {{ color: var(--accent-2) !important; -webkit-text-fill-color: var(--accent-2) !important; font-weight: 900 !important; }}
+        .delta-bad, .delta-bad * {{ color: var(--danger) !important; -webkit-text-fill-color: var(--danger) !important; font-weight: 900 !important; }}
+        .delta-watch, .delta-watch * {{ color: var(--warning) !important; -webkit-text-fill-color: var(--warning) !important; font-weight: 900 !important; }}
+        .delta-neutral, .delta-neutral * {{ color: var(--text-main) !important; -webkit-text-fill-color: var(--text-main) !important; font-weight: 900 !important; }}
         @media (max-width: 900px) {{ .mini-grid {{ grid-template-columns: repeat(2, minmax(0,1fr)); }} }}
         </style>
         """,
@@ -351,10 +356,26 @@ def _pick_delta_style(delta: float | None, direction: str = "lower_is_better", r
 
 
 def delta_html(delta: float | None, direction: str = "lower_is_better", reference_delta: float | None = None) -> str:
+    """Return a percent-change badge with inline color.
+
+    Inline color is intentional because Streamlit/BaseWeb sometimes applies
+    broad widget CSS that overrides normal class-based color rules. This makes
+    green/red/yellow/white percent changes render consistently inside KPI
+    cards, alert cards, and compact HTML tables.
+    """
+    t = current_theme()
+    color_map = {
+        "delta-good": t["accent2"],
+        "delta-bad": t["danger"],
+        "delta-watch": t["warning"],
+        "delta-neutral": t["text"],
+    }
     if _is_missing_number(delta):
-        return '<span class="delta-neutral">—</span>'
+        color = color_map["delta-neutral"]
+        return f'<span class="delta-neutral" style="color:{color} !important; -webkit-text-fill-color:{color} !important; font-weight:900;">—</span>'
     cls, arrow = _pick_delta_style(delta, direction=direction, reference_delta=reference_delta)
-    return f'<span class="{cls}">{arrow} {abs(float(delta)):.1f}%</span>'
+    color = color_map.get(cls, t["text"])
+    return f'<span class="{cls}" style="color:{color} !important; -webkit-text-fill-color:{color} !important; font-weight:900;">{arrow} {abs(float(delta)):.1f}%</span>'
 
 
 def kpi_card(label: str, value: str, previous: str = "", delta: float | None = None, caption: str = "", delta_direction: str = "lower_is_better", reference_delta: float | None = None):
