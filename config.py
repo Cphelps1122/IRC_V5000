@@ -15,7 +15,7 @@ GOOGLE_WORKSHEET = "Property"
 AUTO_REFRESH_SECONDS = 30
 
 # Change this before sharing the deployed app, or set APP_PASSWORD in Streamlit Secrets.
-APP_PASSWORD = "Gopher22"
+APP_PASSWORD = "PlumCt_2212_0285"
 
 # Alert thresholds.
 # V11 is treatment-driven: raw cost/usage changes are only flagged when they
